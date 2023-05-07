@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Suspended User</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<script
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<script src="/media/js/suspended.js"> </script>
+</head>
+<body>
+  <div class="btn-info text-center ">
+    <h1  class="content">Suspended Page</h1>
+  </div>
+    <form id="suspended-form" method="POST">
+      {% csrf_token %}
+      {% for a in all %}
+    <div class="custom-control custom-switch">
+    <input type="checkbox" class="custom-control-input" id="customSwitch{{forloop.counter}}" name="{{ a.username }}" value="{{ a.username }}" data-bs-toggle="modal" data-bs-target="#exampleModal{{forloop.counter}}">
+    <label class="custom-control-label" for="customSwitch{{forloop.counter}}">{{ a.username }}</label>
+    <a href="" data-toggle="modal" data-target="#exampleModal1">Edit</a> 
+    <a href="" data-toggle="modal" data-target="#userModal">View</a>
+</div>
+{% endfor %}  <!-- Modal for the current user -->
+  <div id="exampleModal{{forloop.counter}}" class="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Suspended Status</h4>
+        </div>
+        <div class="modal-body">
+          <p id="message"><p>
+        </div>
+        <div class="modal-footer">
+          <input type="button" id="btnSubmit" value="Close" data-dismiss="modal" />
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- View Modal for User -->
+  {% for u in all %}
+  <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userModalLabel">User Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>Username: <span id="username"></span></p>
+            <p>Email: <span id="email"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+     <script>// Get the toggle buttons and modal
+      var toggleButtons = document.querySelectorAll(".custom-control-input");
+      var modal = document.getElementsByClassName('modal')[0];
+      var messageElement = document.getElementById("message");
+      var userElement = document.getElementById("username");
+      var emailElement = document.getElementById("email");
+      
+      // For each toggle button, add an onclick event handler to show the modal
+      toggleButtons.forEach(function(button) {
+        button.onclick = function() {
+          modal.style.display = "block";
+        }
+      });
+      // When the user clicks the close button, hide the modal
+      var closeButton = document.getElementById("btnSubmit");
+      ;
+      closeButton.onclick = function() {
+        modal.style.display = "none";
+      }
+        </script>
+  </form>
+</body>
+</html>
